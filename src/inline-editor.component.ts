@@ -5,15 +5,15 @@ import {
     OnChanges, SimpleChanges
 } from '@angular/core';
 
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { InputConfig, InputType, SelectOptions } from "./input-config";
-import { InputTextComponent } from "./inputs/input-text.component";
-import { InputNumberComponent } from "./inputs/input-number.component";
-import { InputBase } from "./inputs/input-base";
-import { InputPasswordComponent } from "./inputs/input-password.component";
-import { InputRangeComponent } from "./inputs/input-range.component";
-import { InputTextareaComponent } from "./inputs/input-textarea.component";
-import { InputSelectComponent } from "./inputs/input-select.component";
+import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
+import {InputConfig, InputType, SelectOptions} from "./input-config";
+import {InputTextComponent} from "./inputs/input-text.component";
+import {InputNumberComponent} from "./inputs/input-number.component";
+import {InputBase} from "./inputs/input-base";
+import {InputPasswordComponent} from "./inputs/input-password.component";
+import {InputRangeComponent} from "./inputs/input-range.component";
+import {InputTextareaComponent} from "./inputs/input-textarea.component";
+import {InputSelectComponent} from "./inputs/input-select.component";
 
 export const InputComponets = [
     InputTextComponent,
@@ -35,8 +35,9 @@ const inputConfig: InputConfig = {
     min: 1,
     pattern: '',
     max: Infinity,
-    fnErrorLength: function (x) { alert('Error: Lenght!'); },
-    fnErrorPattern: function (x) { alert('Error: Pattern!'); }
+    fnErrorLength: new EventEmitter(),
+    fnErrorPattern: new EventEmitter(),
+    validationMessage: ''
 };
 
 const NUMERIC_TYPES: InputType[] = ['range', 'number'];
@@ -58,6 +59,7 @@ const NUMERIC_TYPES: InputType[] = ['range', 'number'];
                             </div>
                         </div>
                     </div>
+                    <div *ngIf="!isValid" class="alert alert-danger">{{validationMessage}}</div>
                </div>`,
     styles: [`a {
     text-decoration: none;
@@ -125,7 +127,7 @@ select {
 export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAccessor {
 
     // Inputs implemented
-    private components: { [key: string]: any } = {
+    private components: {[key: string]: any} = {
         text: InputTextComponent,
         number: InputNumberComponent,
         password: InputPasswordComponent,
@@ -168,9 +170,10 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
     @Input() public min: number;
     @Input() public max: number;
     @Input() public pattern: string;
+    @Input() public validationMessage: string;
     // TO DO: This must be outputs events emitter
-    @Input() public fnErrorLength;
-    @Input() public fnErrorPattern;
+    @Output() public fnErrorLength = new EventEmitter<any>();
+    @Output() public fnErrorPattern = new EventEmitter<any>();
 
 
     //textarea's attribute
@@ -190,7 +193,10 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
         }
     }
 
-    get options() { return this._options; }
+    get options() {
+        return this._options;
+    }
+
     // @Output() public selected:EventEmitter<any> = new EventEmitter();
 
     public onChange: Function;
@@ -200,9 +206,12 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
     private preValue: string = '';
     private editing: boolean = false;
     public isEmpty: boolean = false;
+    public isValid: boolean = true;
     private _options;
 
-    public get value(): any { return this._value; };
+    public get value(): any {
+        return this._value;
+    };
 
     public set value(newValue: any) {
         if (newValue !== this._value) {
@@ -211,11 +220,12 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
         }
     }
 
-    constructor(public componentFactoryResolver: ComponentFactoryResolver) { }
+    constructor(public componentFactoryResolver: ComponentFactoryResolver) {
+    }
 
     private componentRef: ComponentRef<{}>;
 
-    @ViewChild('container', { read: ViewContainerRef })
+    @ViewChild('container', {read: ViewContainerRef})
     private container: ViewContainerRef;
     private inputInstance: InputBase;
 
@@ -250,6 +260,7 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
         this.initProperty('pattern');
         this.initProperty('fnErrorLength');
         this.initProperty('fnErrorPattern');
+        this.initProperty('validationMessage');
     }
 
     writeValue(value: any): void {
@@ -259,16 +270,20 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
         } else {
 
             /*if (this.type === "select") {
-                this.empty = this.options.data[0][this.options.value];
-            }*/
+             this.empty = this.options.data[0][this.options.value];
+             }*/
             //this._value = this.empty;
             this.isEmpty = true;
         }
     }
 
-    public registerOnChange(fn: Function): void { this.onChange = fn; }
+    public registerOnChange(fn: Function): void {
+        this.onChange = fn;
+    }
 
-    public registerOnTouched(fn: Function): void { this.onTouched = fn; };
+    public registerOnTouched(fn: Function): void {
+        this.onTouched = fn;
+    };
 
     // Method to display the inline edit form and hide the <a> element
     edit(value): void {
@@ -281,18 +296,21 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
     // Method to display the editable value as text and emit save event to host
     onSubmit(value): void {
         if (this.pattern && this.inputInstance.isRegexTestable && !new RegExp(this.pattern).test(value)) {
-            return this.fnErrorPattern();
+            this.isValid = false;
+            return this.fnErrorPattern.emit(this)
         }
 
         const length = this.inputInstance.isNumeric ? Number(value) : value.length;
 
         if (length < this.min || length > this.max) {
-            return this.fnErrorLength();
+            this.isValid = false;
+            return this.fnErrorLength.emit(this)
         }
 
         this.onSave.emit(value);
         this.editing = false;
         this.isEmpty = false;
+        this.isValid = true;
     }
 
     // Method to reset the editable value

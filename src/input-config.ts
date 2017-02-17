@@ -29,6 +29,7 @@ export interface InputConfig {
     max: number;
     // Pattern to test against value (input text only)
     pattern: string;
-    fnErrorLength: (any: any) => void;
-    fnErrorPattern: (any: any) => void;
+    fnErrorLength: any;
+    fnErrorPattern: any;
+    validationMessage: string;
 }
