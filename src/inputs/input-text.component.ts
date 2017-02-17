@@ -56,7 +56,7 @@ select {
     display: none;
 }`],
     template: `<input #inputRef type="text" class="form-control" [(ngModel)]="context.value" [required]="context.required"
-                      [disabled]="context.disabled" [name]="context.name" [placeholder]="context.placeholder" [size]="context.size"/>`
+                      [disabled]="context.disabled" [name]="context.name" [placeholder]="context.placeholder" [size]="context.size" [maxlength]="context.size"/>`
 })
 export class InputTextComponent extends InputBase implements OnInit {
     @ViewChild('inputRef') public inputRef: ElementRef;

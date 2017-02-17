@@ -56,7 +56,8 @@ select {
     display: none;
 }`],
     template: `<input #inputRef type="password" class="form-control" [(ngModel)]="context.value" [required]="context.required"
-                      [disabled]="context.disabled" [name]="context.name" [placeholder]="context.placeholder" [size]="context.size"/>`
+                      [disabled]="context.disabled" [name]="context.name" [placeholder]="context.placeholder" [size]="context.size"
+                      [maxlength]="context.size"/>`
 })
 export class InputPasswordComponent extends InputBase {
     @ViewChild('inputRef') public inputRef: ElementRef;

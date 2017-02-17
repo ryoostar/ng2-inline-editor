@@ -56,7 +56,8 @@ select {
     display: none;
 }`],
     template: `<input #inputRef type="number" class="form-control" [(ngModel)]="context.value" [required]="context.required"
-                      [disabled]="context.disabled" [name]="context.name" [placeholder]="context.placeholder" [size]="context.size"/>`
+                      [disabled]="context.disabled" [name]="context.name" [placeholder]="context.placeholder" [size]="context.size"
+                      [maxlength]="context.size"/>`
 })
 export class InputNumberComponent extends InputBase {
     @ViewChild('inputRef') public inputRef: ElementRef;
