@@ -37,7 +37,8 @@ const inputConfig: InputConfig = {
     max: Infinity,
     fnErrorLength: new EventEmitter(),
     fnErrorPattern: new EventEmitter(),
-    validationMessage: ''
+    validationMessage: '',
+    textClass:'',
 };
 
 const NUMERIC_TYPES: InputType[] = ['range', 'number'];
@@ -46,7 +47,7 @@ const NUMERIC_TYPES: InputType[] = ['range', 'number'];
     selector: 'inline-editor',
     template: `<div>
                 <div id="inlineEditWrapper">
-                    <a [ngClass]="{'editable-empty': isEmpty }"  (click)="edit(value)" [hidden]="editing && !disabled">{{ showText() }}</a>
+                    <a [ngClass]="{'editable-empty': isEmpty }" class="{{textClass}}"  (click)="edit(value)" [hidden]="editing && !disabled">{{ showText() }}</a>
                     <div class="inlineEditForm form-inline" [hidden]="!editing || disabled">
                         <div class="form-group">
                             <div #container></div>
@@ -171,6 +172,7 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
     @Input() public max: number;
     @Input() public pattern: string;
     @Input() public validationMessage: string;
+    @Input() public textClass: string;
     // TO DO: This must be outputs events emitter
     @Output() public fnErrorLength = new EventEmitter<any>();
     @Output() public fnErrorPattern = new EventEmitter<any>();
@@ -261,6 +263,7 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
         this.initProperty('fnErrorLength');
         this.initProperty('fnErrorPattern');
         this.initProperty('validationMessage');
+        this.initProperty('textClass');
     }
 
     writeValue(value: any): void {

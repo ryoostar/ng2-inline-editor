@@ -32,4 +32,5 @@ export interface InputConfig {
     fnErrorLength: any;
     fnErrorPattern: any;
     validationMessage: string;
+    textClass:string;
 }
