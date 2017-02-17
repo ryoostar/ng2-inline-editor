@@ -67,6 +67,7 @@ const NUMERIC_TYPES: InputType[] = ['range', 'number'];
     line-height: 2;
     margin-right: 5px;
     margin-left: 5px;
+    white-space: pre-wrap;
 }
 
 
