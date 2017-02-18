@@ -310,16 +310,17 @@ export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAcc
             return this.fnErrorLength.emit(this)
         }
 
-        this.onSave.emit(this);
         this.editing = false;
         this.isEmpty = false;
         this.isValid = true;
+        this.onSave.emit(this);
     }
 
     // Method to reset the editable value
     cancel(value: any): void {
         this.value = this.preValue;
         this.editing = false;
+        this.isValid = this.preValue != '';
 
         this.onCancel.emit(this);
     }
