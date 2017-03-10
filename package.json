@@ -1,6 +1,6 @@
 {
   "name": "ng2-inline-editor",
-  "version": "0.1.1-alpha.10",
+  "version": "0.1.1-alpha.11",
   "license": "MIT",
   "main": "./dist/index.js",
   "scripts": {
@@ -9,26 +9,23 @@
     "build": "./node_modules/.bin/ngc -p tsconfig.json"
   },
   "maintainers": [{
-    "name": "Carlos Caballero",
-    "email": "caballerog.carlos@gmail.com"
-  }, {
-    "name": "Toni Villena",
-    "email": "tonivj5@gmail.com"
+    "name": "Shine Yu",
+    "email": "ryoostar@gmail.com"
   }],
   "repository": {
     "type": "git",
     "url": "https://github.com/ryoostar/ng2-inline-editor"
   },
   "author": {
-    "name": "Carlos Caballero",
-    "email": "caballerog.carlos@gmail.com"
+    "name": "Shine Yu",
+    "email": "ryoostar@gmail.com"
   },
   "keywords": [
     "angular",
     "angular2"
   ],
   "bugs": {
-    "url": "https://github.com/caballerog/ng2-inline-editor/issues"
+    "url": "https://github.com/ryoostar/ng2-inline-editor/issues"
   },
   "typings": "./dist/index.d.ts",
   "dependencies": {
