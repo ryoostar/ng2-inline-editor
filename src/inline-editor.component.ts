@@ -56,11 +56,10 @@ const NUMERIC_TYPES: InputType[] = ['range', 'number'];
                                     (click)="onSubmit(value)"><span class="fa fa-check"></span></button>
                                 <button class="btn btn-xs btn-danger" (click)="cancel(value)"><span class="fa fa-remove"></span> </button>
                             </span>
-
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="!isValid" class="alert alert-danger">{{validationMessage}}</div>
+                    <label *ngIf="!isValid" style="font-size:12px;color: #dd5826;">{{validationMessage}}</label>
                </div>`,
     styles: [`a {
     text-decoration: none;
