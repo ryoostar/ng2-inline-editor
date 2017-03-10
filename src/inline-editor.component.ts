@@ -59,7 +59,7 @@ const NUMERIC_TYPES: InputType[] = ['range', 'number'];
                             </div>
                         </div>
                     </div>
-                    <label *ngIf="!isValid" style="font-size:12px;color: #dd5826;">{{validationMessage}}</label>
+                    <label *ngIf="!isValid && editing" style="font-size:12px;color: #dd5826;">{{validationMessage}}</label>
                </div>`,
     styles: [`a {
     text-decoration: none;
