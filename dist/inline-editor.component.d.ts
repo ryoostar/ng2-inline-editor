@@ -1,7 +1,7 @@
-import { OnInit, EventEmitter, ComponentFactoryResolver, OnChanges, SimpleChanges } from '@angular/core';
+import { ComponentFactoryResolver, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { InputType } from "./input-config";
-import { InputTextComponent } from "./inputs/input-text.component";
+import { InputType } from './input-config';
+import { InputTextComponent } from './inputs/input-text.component';
 export declare const InputComponets: typeof InputTextComponent[];
 export declare class InlineEditorComponent implements OnInit, OnChanges, ControlValueAccessor {
     componentFactoryResolver: ComponentFactoryResolver;

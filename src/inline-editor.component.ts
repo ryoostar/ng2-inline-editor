@@ -1,19 +1,27 @@
 import {
-    Component, forwardRef, Input, OnInit, Output,
-    EventEmitter, ElementRef, ViewChild, Renderer,
-    ComponentRef, ComponentFactoryResolver, ViewContainerRef,
-    OnChanges, SimpleChanges
+    Component,
+    ComponentFactoryResolver,
+    ComponentRef,
+    EventEmitter,
+    forwardRef,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
 
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
-import {InputConfig, InputType, SelectOptions} from "./input-config";
-import {InputTextComponent} from "./inputs/input-text.component";
-import {InputNumberComponent} from "./inputs/input-number.component";
-import {InputBase} from "./inputs/input-base";
-import {InputPasswordComponent} from "./inputs/input-password.component";
-import {InputRangeComponent} from "./inputs/input-range.component";
-import {InputTextareaComponent} from "./inputs/input-textarea.component";
-import {InputSelectComponent} from "./inputs/input-select.component";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {InputConfig, InputType} from './input-config';
+import {InputTextComponent} from './inputs/input-text.component';
+import {InputNumberComponent} from './inputs/input-number.component';
+import {InputBase} from './inputs/input-base';
+import {InputPasswordComponent} from './inputs/input-password.component';
+import {InputRangeComponent} from './inputs/input-range.component';
+import {InputTextareaComponent} from './inputs/input-textarea.component';
+import {InputSelectComponent} from './inputs/input-select.component';
 
 export const InputComponets = [
     InputTextComponent,
@@ -38,85 +46,88 @@ const inputConfig: InputConfig = {
     fnErrorLength: new EventEmitter(),
     fnErrorPattern: new EventEmitter(),
     validationMessage: '',
-    textClass:'',
+    textClass: '',
 };
 
 const NUMERIC_TYPES: InputType[] = ['range', 'number'];
 
 @Component({
     selector: 'inline-editor',
-    template: `<div>
-                <div id="inlineEditWrapper">
-                    <a [ngClass]="{'editable-empty': isEmpty }" class="{{textClass}}"  (click)="edit(value)" [hidden]="editing && !disabled">{{ showText() }}</a>
-                    <div class="inlineEditForm form-inline" [hidden]="!editing || disabled">
-                        <div class="form-group">
-                            <div #container></div>
-                            <span class="inline-editor-button-group">
+    template: `
+      <div>
+        <div id="inlineEditWrapper">
+          <a [ngClass]="{'editable-empty': isEmpty }" class="{{textClass}}" (click)="edit(value)"
+             [hidden]="editing && !disabled">{{ showText() }}</a>
+          <div class="inlineEditForm form-inline" [hidden]="!editing || disabled">
+            <div class="form-group">
+              <div #container></div>
+              <span class="inline-editor-button-group">
                                 <button id="inline-editor-button-save" class="btn btn-xs btn-primary"
-                                    (click)="onSubmit(value)"><span class="fa fa-check"></span></button>
-                                <button class="btn btn-xs btn-danger" (click)="cancel(value)"><span class="fa fa-remove"></span> </button>
+                                        (click)="onSubmit(value)"><span class="fa fa-check"></span></button>
+                                <button class="btn btn-xs btn-danger" (click)="cancel(value)"><span
+                                    class="fa fa-remove"></span> </button>
                             </span>
-                            </div>
-                        </div>
-                    </div>
-                    <label *ngIf="!isValid && editing" style="font-size:12px;color: #dd5826;">{{validationMessage}}</label>
-               </div>`,
+            </div>
+          </div>
+        </div>
+        <label *ngIf="!isValid && editing" style="font-size:12px;color: #dd5826;">{{validationMessage}}</label>
+      </div>`,
     styles: [`a {
-    text-decoration: none;
-    color: #428bca;
-    border-bottom: dashed 1px #428bca;
-    cursor: pointer;
-    line-height: 2;
-    margin-right: 5px;
-    margin-left: 5px;
-    white-space: pre-wrap;
-}
+        text-decoration: none;
+        color: #428bca;
+        border-bottom: dashed 1px #428bca;
+        cursor: pointer;
+        line-height: 2;
+        margin-right: 5px;
+        margin-left: 5px;
+        white-space: pre-wrap;
+    }
 
+    /* editable-empty */
 
-/* editable-empty */
+    .editable-empty,
+    .editable-empty:hover,
+    .editable-empty:focus,
+    a.editable-empty,
+    a.editable-empty:hover,
+    a.editable-empty:focus {
+        font-style: italic;
+        color: #DD1144;
+        text-decoration: none;
+    }
 
-.editable-empty,
-.editable-empty:hover,
-.editable-empty:focus,
-a.editable-empty,
-a.editable-empty:hover,
-a.editable-empty:focus {
-    font-style: italic;
-    color: #DD1144;
-    text-decoration: none;
-}
+    .inlineEditForm {
+        display: inline-block;
+        white-space: nowrap;
+        margin: 0;
+    }
 
-.inlineEditForm {
-    display: inline-block;
-    white-space: nowrap;
-    margin: 0;
-}
+    #inlineEditWrapper {
+        display: inline-block;
+    }
 
-#inlineEditWrapper {
-    display: inline-block;
-}
+    .inlineEditForm input,
+    select {
+        width: auto;
+        display: inline;
+    }
 
-.inlineEditForm input,
-select {
-    width: auto;
-    display: inline;
-}
+    .inline-editor-button-group {
+        display: inline-block;
+    }
 
-.inline-editor-button-group{
-    display:inline-block;
-}
-.editInvalid{
- color: #a94442;
- margin-bottom: 0;
-}
+    .editInvalid {
+        color: #a94442;
+        margin-bottom: 0;
+    }
 
-.error {
-    border-color: #a94442;
-}
+    .error {
+        border-color: #a94442;
+    }
 
-[hidden] {
-    display: none;
-}`],
+    [hidden] {
+        display: none;
+    }`],
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => InlineEditorComponent),
@@ -127,7 +138,7 @@ select {
 export class InlineEditorComponent implements OnInit, OnChanges, ControlValueAccessor {
 
     // Inputs implemented
-    private components: {[key: string]: any} = {
+    private components: { [key: string]: any } = {
         text: InputTextComponent,
         number: InputNumberComponent,
         password: InputPasswordComponent,
